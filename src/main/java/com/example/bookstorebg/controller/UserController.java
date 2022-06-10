@@ -1,6 +1,7 @@
 package com.example.bookstorebg.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.bookstorebg.entity.User;
 import com.example.bookstorebg.service.BookService;
 import com.example.bookstorebg.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,10 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/findUser")
-    public String getBooks(@RequestBody Map o) {
+    public String findUser(@RequestBody Map o) {
         String username = (String) o.get("username");
         String password = (String) o.get("password");
 //        System.out.println(username);
-        String userJson = JSON.toJSONString(userService.findUser(username,password));
-
-        return userJson;
+        return JSON.toJSONString(userService.findUser(username, password));
     }
 }

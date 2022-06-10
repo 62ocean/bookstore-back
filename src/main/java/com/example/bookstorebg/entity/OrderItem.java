@@ -1,29 +1,32 @@
 package com.example.bookstorebg.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Data
+@Entity
+@Table(name = "order_item")
+@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OrderItem {
-    @JSONField(name = "name")
-    private String name;
-    @JSONField(name = "num")
-    private Long num;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
+    Long itemId;
 
-    public OrderItem(String name, Long num) {
-        this.name = name;
-        this.num = num;
-    }
+    @Column(name = "book_id")
+    Long bookId;
+    @Column(name = "order_id")
+    Long orderId;
+    Long num;
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getNum() {
-        return num;
-    }
-    public void setNum(Long num) {
+    public OrderItem(Long bookId, Long orderId, Long num) {
+        this.bookId = bookId;
+        this.orderId = orderId;
         this.num = num;
     }
 }

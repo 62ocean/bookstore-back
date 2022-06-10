@@ -1,70 +1,38 @@
 package com.example.bookstorebg.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
+import javax.persistence.*;
+
+@Data
+@Entity
+@Table(name = "orders")
+@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order {
-    @JSONField(name = "order_id")
-    private Long order_id;
-    @JSONField(name = "price")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
+    private Long orderId;
+
+    @Column(name = "user_id")
+    private Long userId;
     private Double price;
-    @JSONField(name = "address")
     private String address;
-    @JSONField(name = "receiver")
     private String receiver;
-    @JSONField(name = "tele")
     private String tele;
-    @JSONField(name = "invoice")
-    private Boolean invoice;
 
-    public Order(Long order_id,Double price, String address, String receiver, String tele, Boolean invoice) {
-        this.order_id = order_id;
+    public Order(Long user_id, Double price, String address, String receiver, String tele) {
+        this.userId = user_id;
         this.price = price;
         this.address = address;
         this.receiver = receiver;
         this.tele = tele;
-        this.invoice = invoice;
-    }
-    
-    public Long getOrderId() {
-        return order_id;
-    }
-    public void setOrderId(Long orderId) {
-        this.order_id = order_id;
-    }
-    
-    public Double getPrice() {
-        return price;
-    }
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getTele() {
-        return tele;
-    }
-    public void setTele(String tele) {
-        this.tele = tele;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Boolean getInvoice() {
-        return invoice;
-    }
-    public void setInvoice(Boolean invoice) {
-        this.invoice = invoice;
     }
 
 }

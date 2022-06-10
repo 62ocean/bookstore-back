@@ -1,4 +1,4 @@
-package com.example.bookstorebg;
+package com.example.bookstorebg.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

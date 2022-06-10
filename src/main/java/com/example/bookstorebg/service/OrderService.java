@@ -4,13 +4,14 @@ import com.example.bookstorebg.entity.Order;
 import com.example.bookstorebg.entity.OrderItem;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
-    List<Order> getOrders(Integer user_id);
+    List<Order> getOrders(Long user_id);
 
-    List<OrderItem> getOrderItems(Integer order_id);
+    List<Map<String, Object>> getOrderItems(Long order_id);
 
-    void createOrder(Integer user_id, Double price, String address, String receiver, String tele);
+    void addOrder(Long user_id, Double price, String address, String receiver, String tele);
 
 }

@@ -20,11 +20,9 @@ public class CartController {
     private CartService cartService;
 
     @RequestMapping("/getCartBooks")
-    public String getCartBooks(@RequestBody Map o) {
-        Integer user_id = (Integer) o.get("user_id");
-
-        String cartJson = JSON.toJSONString(cartService.getCartBooks(user_id));
-        return cartJson;
+    public List<Map<String, Object>> getCartBooks(@RequestBody Map o) {
+        Long user_id = Long.valueOf((Integer) o.get("user_id"));
+        return cartService.getCartBooks(user_id);
     }
 
     @RequestMapping("/addCartBook")
@@ -32,13 +30,10 @@ public class CartController {
         Integer user_id = (Integer) o.get("user_id");
         String book_id = (String) o.get("book_id");
 
-        boolean isExist = cartService.queryCartBook(Integer.valueOf(book_id), user_id);
+        boolean isExist = cartService.addCartBook(Long.valueOf(book_id), Long.valueOf(user_id));
 
         if (isExist) return JSON.toJSONString(1);
-        else {
-            cartService.addCartBook(Integer.valueOf(book_id), user_id);
-            return JSON.toJSONString(2);
-        }
+        else return JSON.toJSONString(2);
     }
 
     @RequestMapping("/deleteCartBook")
@@ -46,7 +41,7 @@ public class CartController {
         Integer user_id = (Integer) o.get("user_id");
         Integer book_id = (Integer) o.get("book_id");
 
-        cartService.deleteCartBook(book_id, user_id);
+        cartService.deleteCartBook(Long.valueOf(book_id), Long.valueOf(user_id));
         return JSON.toJSONString(null);
     }
 
