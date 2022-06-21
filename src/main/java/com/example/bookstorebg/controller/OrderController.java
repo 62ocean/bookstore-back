@@ -25,15 +25,8 @@ public class OrderController {
         return orderService.getOrders(user_id);
     }
 
-    @RequestMapping("/getOrderItems")
-    public List<Map<String, Object>> getOrderItems(@RequestBody Map<String, Object> o) {
-        Long order_id = Long.valueOf((Integer)o.get("order_id"));
-
-        return orderService.getOrderItems(order_id);
-    }
-
     @RequestMapping("/receiveOrders")
-    public String createOrders(@RequestBody Map o) {
+    public String createOrders(@RequestBody Map<String, Object> o) {
         Long user_id = Long.valueOf((Integer)o.get("user_id"));
         Double price = (Double) o.get("price");
         String address = (String) o.get("address");

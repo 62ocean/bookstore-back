@@ -10,8 +10,6 @@ public interface OrderService {
 
     List<Order> getOrders(Long user_id);
 
-    List<Map<String, Object>> getOrderItems(Long order_id);
-
     void addOrder(Long user_id, Double price, String address, String receiver, String tele);
 
 }

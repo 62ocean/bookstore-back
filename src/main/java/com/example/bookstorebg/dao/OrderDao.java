@@ -7,10 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderDao {
-    List<Order> getOrders(Long user_id);
 
-    List<Map<String, Object>> getOrderItems(Long order_id);
-
-    Order addOrder(Order order);
-    void addOrderItem(OrderItem orderItem);
+    void addOrder(Order order);
 }

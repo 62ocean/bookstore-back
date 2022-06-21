@@ -20,13 +20,13 @@ public class CartController {
     private CartService cartService;
 
     @RequestMapping("/getCartBooks")
-    public List<Map<String, Object>> getCartBooks(@RequestBody Map o) {
+    public List<CartItem> getCartBooks(@RequestBody Map<String, Object> o) {
         Long user_id = Long.valueOf((Integer) o.get("user_id"));
         return cartService.getCartBooks(user_id);
     }
 
     @RequestMapping("/addCartBook")
-    public String addCartBook(@RequestBody Map o) {
+    public String addCartBook(@RequestBody Map<String, Object> o) {
         Integer user_id = (Integer) o.get("user_id");
         String book_id = (String) o.get("book_id");
 
@@ -37,7 +37,7 @@ public class CartController {
     }
 
     @RequestMapping("/deleteCartBook")
-    public String deleteCartBook(@RequestBody Map o) {
+    public String deleteCartBook(@RequestBody Map<String, Object> o) {
         Integer user_id = (Integer) o.get("user_id");
         Integer book_id = (Integer) o.get("book_id");
 

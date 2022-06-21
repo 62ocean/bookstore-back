@@ -1,6 +1,7 @@
 package com.example.bookstorebg.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,20 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     Long itemId;
-
-    @Column(name = "book_id")
-    Long bookId;
-    @Column(name = "order_id")
-    Long orderId;
     Long num;
 
-    public OrderItem(Long bookId, Long orderId, Long num) {
-        this.bookId = bookId;
-        this.orderId = orderId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Order order;
+
+    public OrderItem(Book book, Long num, Order order) {
+        this.book = book;
         this.num = num;
+        this.order = order;
     }
 }

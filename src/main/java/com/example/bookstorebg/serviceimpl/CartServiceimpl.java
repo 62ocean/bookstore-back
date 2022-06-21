@@ -1,9 +1,12 @@
 package com.example.bookstorebg.serviceimpl;
 
+import com.example.bookstorebg.dao.BookDao;
 import com.example.bookstorebg.dao.CartDao;
+import com.example.bookstorebg.dao.UserDao;
 import com.example.bookstorebg.entity.Book;
 import com.example.bookstorebg.entity.CartItem;
 import com.example.bookstorebg.entity.Order;
+import com.example.bookstorebg.entity.User;
 import com.example.bookstorebg.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,53 +20,36 @@ import java.util.Map;
 public class CartServiceimpl implements CartService {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-    @Autowired
     private CartDao cartDao;
+    @Autowired
+    private BookDao bookDao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
-    public List<Map<String, Object>> getCartBooks(Long user_id) {
-        return cartDao.getCartBooks(user_id);
-
-//        List<CartItem> result = new ArrayList<CartItem>();
-//
-//        result = jdbcTemplate.query(
-//                "SELECT book_id, name, price, num, image " +
-//                        "FROM cart_item, book " +
-//                        "WHERE user_id = ? AND book.id = cart_item.book_id",
-//                (rs, rowNum) -> new CartItem(rs.getLong("book_id"),
-//                        rs.getString("name"),
-//                        rs.getDouble("price"),
-//                        rs.getLong("num"),
-//                        rs.getString("image"))
-//                ,user_id);
-//
-//        return result;
+    public List<CartItem> getCartBooks(Long user_id) {
+        User user = userDao.findUserById(user_id);
+        return user.getCartItems();
     }
 
     @Override
     public boolean addCartBook(Long book_id, Long user_id) {
-        CartItem cart_item = new CartItem(book_id, user_id, new Long(1));
-
-
-        boolean isExist = cartDao.queryCartBook(book_id, user_id);
-        if (!isExist) cartDao.addCartBook(cart_item);
-
-        return isExist;
-
+        Book book = bookDao.findBookById(book_id);
+        User user = userDao.findUserById(user_id);
+        CartItem cartItem = cartDao.getCartBook(book, user);
+        if (cartItem == null) {
+            CartItem cart_item = new CartItem(book, user, new Long(1));
+            cartDao.addCartBook(cart_item);
+            return false;
+        }
+        return true;
     }
-
-//    public void addCartBook(Integer book_id, Integer user_id) {
-//
-//        jdbcTemplate.update("INSERT INTO cart_item VALUES (?,?,?)",
-//                user_id, book_id, 1);
-//
-//    }
 
     public void deleteCartBook(Long book_id, Long user_id) {
-        cartDao.deleteCartBook(book_id, user_id);
+        Book book = bookDao.findBookById(book_id);
+        User user = userDao.findUserById(user_id);
+        CartItem cartItem = cartDao.getCartBook(book, user);
+        if (cartItem != null) cartDao.deleteCartBook(cartItem);
     }
-
-
 
 }

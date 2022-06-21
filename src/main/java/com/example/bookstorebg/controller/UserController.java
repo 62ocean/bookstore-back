@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/findUser")
-    public String findUser(@RequestBody Map o) {
+    public String findUser(@RequestBody Map<String, Object> o) {
         String username = (String) o.get("username");
         String password = (String) o.get("password");
 //        System.out.println(username);

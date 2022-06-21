@@ -14,8 +14,6 @@ import java.util.List;
 public class BookServiceimpl implements BookService {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-    @Autowired
     private BookDao bookDao;
 
     @Override

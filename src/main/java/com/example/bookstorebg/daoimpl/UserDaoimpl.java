@@ -19,4 +19,8 @@ public class UserDaoimpl implements UserDao {
         if (list.isEmpty()) return null;
         else return list.get(0);
     }
+
+    public User findUserById(Long user_id) {
+        return userRepository.getById(user_id);
+    }
 }

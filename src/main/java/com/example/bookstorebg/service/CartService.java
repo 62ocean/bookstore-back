@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface CartService {
 
-    List<Map<String, Object>> getCartBooks(Long user_id);
+    List<CartItem> getCartBooks(Long user_id);
 
     boolean addCartBook(Long book_id, Long user_id);
 

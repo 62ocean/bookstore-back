@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Table(name = "cart_item")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CartItem {
 
     @Id
@@ -21,17 +20,27 @@ public class CartItem {
     @Column(name = "item_id")
     private Long itemId;
 
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "book_id")
-    private Long bookId;
-
     private Long num;
 
-    public CartItem(Long bookId, Long userId, Long num) {
-        this.userId = userId;
-        this.bookId = bookId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public CartItem(Book book, User user, Long num) {
+        this.user = user;
+        this.book = book;
         this.num = num;
     }
 
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "itemId=" + itemId +
+                ", num=" + num +
+                '}';
+    }
 }
