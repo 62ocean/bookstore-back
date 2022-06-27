@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -28,10 +29,10 @@ public class Order {
     private String address;
     private String receiver;
     private String tele;
+    private Timestamp time;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER,
@@ -42,12 +43,24 @@ public class Order {
             orderItems.add(item);
     }
 
-    public Order(User user, Double price, String address, String receiver, String tele) {
+    public Order(User user, Double price, String address, String receiver, String tele, Timestamp time) {
         this.user = user;
         this.price = price;
         this.address = address;
         this.receiver = receiver;
         this.tele = tele;
+        this.time = time;
     }
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", price=" + price +
+                ", address='" + address + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", tele='" + tele + '\'' +
+                ", time=" + time +
+                '}';
+    }
 }

@@ -9,4 +9,6 @@ import java.util.Map;
 public interface OrderDao {
 
     void addOrder(Order order);
+
+    List<Order> getAllOrders();
 }

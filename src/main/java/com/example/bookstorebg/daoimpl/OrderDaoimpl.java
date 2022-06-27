@@ -6,6 +6,8 @@ import com.example.bookstorebg.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class OrderDaoimpl implements OrderDao {
 
@@ -16,5 +18,8 @@ public class OrderDaoimpl implements OrderDao {
         orderRepository.saveAndFlush(order);
     }
 
-
+    @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 }

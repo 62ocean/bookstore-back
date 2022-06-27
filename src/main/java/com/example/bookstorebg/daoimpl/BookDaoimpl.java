@@ -14,13 +14,24 @@ public class BookDaoimpl implements BookDao {
     @Autowired
     private BookRepository bookRepository;
 
+    @Override
     public List<Book> getBooks() {
         return bookRepository.findAll();
     }
 
+    @Override
     public Book findBookById(Long id) {
         return bookRepository.getById(id);
     }
 
+    @Override
+    public void updateBook(Book book) {
+        bookRepository.saveAndFlush(book);
+    }
+
+    @Override
+    public void deleteBook(Book book) {
+        bookRepository.delete(book);
+    }
 }
 

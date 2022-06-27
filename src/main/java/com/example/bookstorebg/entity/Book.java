@@ -25,6 +25,7 @@ public class Book {
     private String description;
     private Long inventory;
     private String image;
+    private Long available;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
@@ -46,6 +47,7 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", inventory=" + inventory +
                 ", image='" + image + '\'' +
+                ", available=" + available +
                 '}';
     }
 }

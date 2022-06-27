@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,5 +28,28 @@ public class UserController {
         String password = (String) o.get("password");
 //        System.out.println(username);
         return JSON.toJSONString(userService.findUser(username, password));
+    }
+
+    @RequestMapping("/getAllUsers")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @RequestMapping("/changeUserStatus")
+    public String changeUserStatus(@RequestBody Map<String, Object> o) {
+        Long userId = Long.valueOf((Integer) o.get("userId"));
+        userService.changeUserStatus(userId);
+        return JSON.toJSONString(null);
+    }
+
+    @RequestMapping("/userStatistics")
+    public List<Map<String, Object>> userStatistics(@RequestBody Map<String, Object> o) throws ParseException {
+        String datestr1 = (String) o.get("date1");
+        String datestr2 = (String) o.get("date2");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy'/'MM'/'dd HH:mm:ss");
+        Timestamp date1 = new Timestamp(sdf.parse(datestr1).getTime());
+        Timestamp date2 = new Timestamp(sdf.parse(datestr2).getTime());
+
+        return userService.userStatistics(date1, date2);
     }
 }

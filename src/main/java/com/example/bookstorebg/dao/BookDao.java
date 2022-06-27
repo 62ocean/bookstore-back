@@ -10,4 +10,7 @@ public interface BookDao {
 
     Book findBookById(Long id);
 
+    void updateBook(Book book);
+    void deleteBook(Book book);
+
 }

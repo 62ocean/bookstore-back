@@ -24,6 +24,9 @@ public class User {
 
     private String username;
     private String password;
+    private String email;
+    String type;
+    Long available;
 
     public User(String username, String password) {
         this.username = username;
