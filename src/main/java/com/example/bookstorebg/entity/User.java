@@ -19,6 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 
@@ -28,9 +29,10 @@ public class User {
     String type;
     Long available;
 
-    public User(String username, String password) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
@@ -42,4 +44,14 @@ public class User {
             cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Order> orders;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

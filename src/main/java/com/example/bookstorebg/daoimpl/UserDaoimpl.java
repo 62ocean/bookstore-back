@@ -22,6 +22,11 @@ public class UserDaoimpl implements UserDao {
     }
 
     @Override
+    public User findUserByUsername(String username) {
+        return userRepository.getByUsername(username);
+    }
+
+    @Override
     public User findUserById(Long user_id) {
         return userRepository.getById(user_id);
     }
@@ -36,5 +41,10 @@ public class UserDaoimpl implements UserDao {
         Long available = 1 - user.getAvailable();
         user.setAvailable(available);
         userRepository.save(user);
+    }
+
+    @Override
+    public void addUser(User user) {
+        userRepository.saveAndFlush(user);
     }
 }

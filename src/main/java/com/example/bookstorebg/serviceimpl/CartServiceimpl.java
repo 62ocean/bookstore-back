@@ -38,7 +38,7 @@ public class CartServiceimpl implements CartService {
         User user = userDao.findUserById(user_id);
         CartItem cartItem = cartDao.getCartBook(book, user);
         if (cartItem == null) {
-            CartItem cart_item = new CartItem(book, user, new Long(1));
+            CartItem cart_item = new CartItem(book, user, 1L);
             cartDao.addCartBook(cart_item);
             return false;
         }

@@ -29,6 +29,18 @@ public class UserController {
 //        System.out.println(username);
         return JSON.toJSONString(userService.findUser(username, password));
     }
+    @RequestMapping("/register")
+    public String register(@RequestBody Map<String, Object> o) {
+        String username = (String) o.get("username");
+        String password = (String) o.get("password");
+        String email = (String) o.get("email");
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(email);
+        boolean ifSuccess = userService.register(username, password, email);
+        if (ifSuccess) return JSON.toJSONString(1);
+        else return JSON.toJSONString(2);
+    }
 
     @RequestMapping("/getAllUsers")
     public List<User> getAllUsers() {
@@ -52,4 +64,17 @@ public class UserController {
 
         return userService.userStatistics(date1, date2);
     }
+
+    @RequestMapping("/userBookStatistics")
+    public List<Map<String, Object>> userBookStatistics(@RequestBody Map<String, Object> o) throws ParseException {
+        Long userId = Long.valueOf((Integer) o.get("userId"));
+        String datestr1 = (String) o.get("date1");
+        String datestr2 = (String) o.get("date2");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy'/'MM'/'dd HH:mm:ss");
+        Timestamp date1 = new Timestamp(sdf.parse(datestr1).getTime());
+        Timestamp date2 = new Timestamp(sdf.parse(datestr2).getTime());
+
+        return userService.userBookStatistics(userId, date1, date2);
+    }
+
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 public interface UserService {
 
     User findUser(String username, String password);
+    boolean register(String username, String password, String email);
 
     List<User> getAllUsers();
 
@@ -16,4 +17,5 @@ public interface UserService {
 
     List<Map<String, Object>> userStatistics(Timestamp date1, Timestamp date2);
 
+    List<Map<String, Object>> userBookStatistics(Long userId, Timestamp date1, Timestamp date2);
 }
