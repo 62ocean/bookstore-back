@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
-    private Double price;
+    private BigDecimal price;
     private String address;
     private String receiver;
     private String tele;
@@ -43,7 +44,7 @@ public class Order {
             orderItems.add(item);
     }
 
-    public Order(User user, Double price, String address, String receiver, String tele, Timestamp time) {
+    public Order(User user, BigDecimal price, String address, String receiver, String tele, Timestamp time) {
         this.user = user;
         this.price = price;
         this.address = address;

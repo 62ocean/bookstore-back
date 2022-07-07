@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
@@ -36,7 +37,7 @@ public class OrderController {
     @RequestMapping("/receiveOrders")
     public String createOrders(@RequestBody Map<String, Object> o) {
         Long user_id = Long.valueOf((Integer)o.get("user_id"));
-        Double price = (Double) o.get("price");
+        BigDecimal price = new BigDecimal((String) o.get("price"));
         String address = (String) o.get("address");
         String receiver = (String) o.get("receiver");
         String tele = (String) o.get("tele");

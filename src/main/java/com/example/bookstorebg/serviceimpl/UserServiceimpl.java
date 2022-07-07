@@ -9,7 +9,9 @@ import com.example.bookstorebg.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import sun.misc.FDBigInteger;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -51,20 +53,20 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public List<Map<String, Object>> userStatistics(Timestamp date1, Timestamp date2) {
-        Map<User, Double> consumptions = new HashMap<>();
+        Map<User, BigDecimal> consumptions = new HashMap<>();
 
         for (User user : userDao.getAllUsers()) {
-            Double consumption = 0.0;
+            BigDecimal consumption = new BigDecimal(0);
             for (Order order : user.getOrders()) {
                 if (order.getTime().before(date1) || order.getTime().after(date2)) {
                     continue;
                 }
-                consumption += order.getPrice();
+                consumption = consumption.add(order.getPrice());
             }
             consumptions.put(user, consumption);
         }
 
-        List<Map.Entry<User, Double>> list = new ArrayList<>(consumptions.entrySet());
+        List<Map.Entry<User, BigDecimal>> list = new ArrayList<>(consumptions.entrySet());
         list.sort(Map.Entry.comparingByValue());
         Collections.reverse(list);
 

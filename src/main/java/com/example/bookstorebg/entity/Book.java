@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class Book {
     private String name;
     private String type;
     private String author;
-    private Double price;
+    private BigDecimal price;
     private String description;
     private Long inventory;
     private String image;

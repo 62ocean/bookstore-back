@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +36,7 @@ public class OrderServiceimpl implements OrderService {
     }
 
     @Override
-    public void addOrder(Long user_id, Double price, String address, String receiver, String tele, Timestamp time) {
+    public void addOrder(Long user_id, BigDecimal price, String address, String receiver, String tele, Timestamp time) {
         User user = userDao.findUserById(user_id);
         Order order = new Order(user, price, address, receiver, tele, time);
 
