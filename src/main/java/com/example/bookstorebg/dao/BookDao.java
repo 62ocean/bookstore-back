@@ -13,4 +13,6 @@ public interface BookDao {
     void updateBook(Book book);
     void deleteBook(Book book);
 
+    void minusInventory(Book book, Long num);
+
 }

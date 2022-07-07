@@ -45,4 +45,15 @@ public class CartController {
         return JSON.toJSONString(null);
     }
 
+    @RequestMapping("/changeCartNum")
+    public String changeCartNum(@RequestBody Map<String, Object> o) {
+        Integer user_id = (Integer) o.get("user_id");
+        Integer book_id = (Integer) o.get("book_id");
+        Integer num = (Integer) o.get("num");
+
+        boolean ifLegal = cartService.changeNum(Long.valueOf(book_id), Long.valueOf(user_id), Long.valueOf(num));
+        if (ifLegal) return JSON.toJSONString(1);
+        else return JSON.toJSONString(2);
+    }
+
 }

@@ -13,5 +13,5 @@ public interface CartService {
 
     void deleteCartBook(Long book_id, Long user_id);
 
-
+    boolean changeNum(Long book_id, Long user_id, Long num);
 }

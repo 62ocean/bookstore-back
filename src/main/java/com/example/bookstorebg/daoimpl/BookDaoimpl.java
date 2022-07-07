@@ -33,5 +33,11 @@ public class BookDaoimpl implements BookDao {
     public void deleteBook(Book book) {
         bookRepository.delete(book);
     }
+
+    @Override
+    public void minusInventory(Book book, Long num) {
+        book.setInventory(book.getInventory() - num);
+        bookRepository.saveAndFlush(book);
+    }
 }
 

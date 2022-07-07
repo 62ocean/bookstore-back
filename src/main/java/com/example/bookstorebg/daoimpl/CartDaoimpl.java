@@ -36,4 +36,9 @@ public class CartDaoimpl implements  CartDao{
         cartRepository.deleteAllByUser(user);
     }
 
+    @Override
+    public void changeNum(CartItem cartItem, Long num) {
+        cartItem.setNum(num);
+        cartRepository.saveAndFlush(cartItem);
+    }
 }

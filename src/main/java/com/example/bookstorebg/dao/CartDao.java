@@ -15,4 +15,6 @@ public interface CartDao {
 
     void deleteCartBook(CartItem cart_item);
     void deleteCartBooksByUser(User user);
+
+    void changeNum(CartItem cartItem, Long num);
 }

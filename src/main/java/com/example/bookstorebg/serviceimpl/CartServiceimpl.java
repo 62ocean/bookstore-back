@@ -52,4 +52,12 @@ public class CartServiceimpl implements CartService {
         if (cartItem != null) cartDao.deleteCartBook(cartItem);
     }
 
+    @Override
+    public boolean changeNum(Long book_id, Long user_id, Long num) {
+        Book book = bookDao.findBookById(book_id);
+        User user = userDao.findUserById(user_id);
+        CartItem cartItem = cartDao.getCartBook(book, user);
+        cartDao.changeNum(cartItem, num);
+        return book.getInventory() >= num;
+    }
 }

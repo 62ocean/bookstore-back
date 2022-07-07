@@ -1,5 +1,6 @@
 package com.example.bookstorebg.serviceimpl;
 
+import com.example.bookstorebg.dao.BookDao;
 import com.example.bookstorebg.dao.CartDao;
 import com.example.bookstorebg.dao.OrderDao;
 import com.example.bookstorebg.dao.UserDao;
@@ -24,6 +25,8 @@ public class OrderServiceimpl implements OrderService {
     private CartDao cartDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private BookDao bookDao;
 
     @Override
     public List<Order> getOrders(Long user_id) {
@@ -40,6 +43,7 @@ public class OrderServiceimpl implements OrderService {
         for (CartItem value : list) {
             OrderItem item = new OrderItem(value.getBook(), value.getNum(), order);
             order.addOrderItem(item);
+            bookDao.minusInventory(value.getBook(), value.getNum());
         }
         orderDao.addOrder(order);
 

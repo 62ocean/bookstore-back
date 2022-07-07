@@ -96,7 +96,7 @@ public class UserServiceimpl implements UserService {
                 if (bookNum.containsKey(orderItem.getBook())) {
                     bookNum.replace(orderItem.getBook(), bookNum.get(orderItem.getBook())+orderItem.getNum());
                 } else {
-                    bookNum.put(orderItem.getBook(), 1L);
+                    bookNum.put(orderItem.getBook(), orderItem.getNum());
                 }
             }
         }
