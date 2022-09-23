@@ -3,8 +3,10 @@ package com.example.bookstorebg.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.bookstorebg.entity.User;
 import com.example.bookstorebg.service.BookService;
+import com.example.bookstorebg.service.TimerService;
 import com.example.bookstorebg.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,14 +23,33 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TimerService timerService;
 
-    @RequestMapping("/findUser")
+    @RequestMapping("/login")
     public String findUser(@RequestBody Map<String, Object> o) {
         String username = (String) o.get("username");
         String password = (String) o.get("password");
+        User user = userService.findUser(username, password);
+        if (user != null) {
+            timerService.changeLoginStatus(true);
+            timerService.getLoginTime();
+        }
 //        System.out.println(username);
-        return JSON.toJSONString(userService.findUser(username, password));
+        System.out.println("login");
+        System.out.println(this);
+        System.out.println(timerService);
+        return JSON.toJSONString(user);
     }
+    @RequestMapping("/logout")
+    public String logout() {
+        System.out.println("logout");
+        System.out.println(this);
+        System.out.println(timerService);
+        timerService.changeLoginStatus(false);
+        return JSON.toJSONString(timerService.getLoginTime());
+    }
+
     @RequestMapping("/register")
     public String register(@RequestBody Map<String, Object> o) {
         String username = (String) o.get("username");
