@@ -1,6 +1,7 @@
 package com.example.bookstorebg.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.bookstorebg.entity.User;
 import com.example.bookstorebg.service.BookService;
 import com.example.bookstorebg.service.TimerService;
@@ -34,11 +35,13 @@ public class UserController {
         if (user != null) {
             timerService.changeLoginStatus(true);
             timerService.getLoginTime();
+            user.setPassword("");
         }
 //        System.out.println(username);
         System.out.println("login");
         System.out.println(this);
         System.out.println(timerService);
+
         return JSON.toJSONString(user);
     }
     @RequestMapping("/logout")

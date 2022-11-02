@@ -4,6 +4,7 @@ import com.example.bookstorebg.dao.BookDao;
 import com.example.bookstorebg.entity.Book;
 import com.example.bookstorebg.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class BookDaoimpl implements BookDao {
 
     @Override
     public List<Book> getBooks() {
-        return bookRepository.findAll();
+        return bookRepository.findAllByAvailable(1L);
     }
 
     @Override

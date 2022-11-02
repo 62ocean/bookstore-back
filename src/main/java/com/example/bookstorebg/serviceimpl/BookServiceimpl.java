@@ -6,6 +6,10 @@ import com.example.bookstorebg.entity.Order;
 import com.example.bookstorebg.entity.OrderItem;
 import com.example.bookstorebg.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,28 +23,39 @@ public class BookServiceimpl implements BookService {
     private BookDao bookDao;
 
     @Override
+    @Cacheable(value = "book", key = "#id")
     public Book findBookById(Long id) {
+        System.out.println("从数据库中获取book: " + id);
         return bookDao.findBookById(id);
     }
 
     @Override
+    @Cacheable(value = "books")
     public List<Book> getBooks() {
+        System.out.println("从数据库中获取booklist");
         return bookDao.getBooks();
     }
 
     @Override
-    public void updateBook(Book book) {
+    @CachePut(value = "book", key = "#book.getId()")
+    @CacheEvict(value = "books", allEntries = true)
+    public Book updateBook(Book book) {
+        System.out.println("同时更新缓存与数据库中的book: "+book.getId());
         bookDao.updateBook(book);
+        return book;
     }
 
     @Override
-    public void deleteBook(Long id) {
+    @CacheEvict(value = "books", allEntries = true)
+    public Book deleteBook(Long id) {
+        System.out.println("同时删除缓存与数据库中的book: "+id);
         Book book = bookDao.findBookById(id);
         if (book.getOrderItems().isEmpty()) bookDao.deleteBook(book);
         else {
             book.setAvailable(0L);
             bookDao.updateBook(book);
         }
+        return book;
 //        System.out.println(book.toString());
 //        bookDao.deleteBook(book);
     }

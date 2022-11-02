@@ -2,6 +2,7 @@ package com.example.bookstorebg.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.bookstorebg.server.WebSocketServer;
 import com.example.bookstorebg.service.OrderService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class OrderListener {
     private OrderService orderService;
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired
+    private WebSocketServer ws;
 
     @KafkaListener(topics = "orders", groupId = "group_topic_test")
     public void orderListener(ConsumerRecord<String, String> record) {
@@ -38,9 +41,11 @@ public class OrderListener {
 
     }
 
-//    @KafkaListener(topics = "orderResults", groupId = "group_topic_test")
-//    public void topic2Listener(ConsumerRecord<String, String> record) {
-//        String value = record.value();
-//        System.out.println(value);
-//    }
+    @KafkaListener(topics = "orderResults", groupId = "group_topic_test")
+    public void topic2Listener(ConsumerRecord<String, String> record) {
+        JSONObject o = JSONObject.parseObject(record.value());
+        System.out.println(record.value());
+//        System.out.println(o.getString("user_id"));
+        ws.sendMessageToUser(o.getString("user_id"), o.toJSONString());
+    }
 }

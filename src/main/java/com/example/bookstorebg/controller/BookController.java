@@ -6,6 +6,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.bookstorebg.entity.Book;
 import com.example.bookstorebg.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,21 +28,24 @@ public class BookController {
 
     @RequestMapping("/getbooks")
     public List<Book> getBooks() {
-
         return bookService.getBooks();
     }
+//    List<Book>的缓存：不能直接当作一个对象缓存，这样会放入一个超长的value，且无法与Book的缓存关联。
+//    每次更新Book后，List<Book>都会被当作一个新的K-V放入redis中。
+//    两种方式：
+//    1.不要利用spring cache的机制，用redisTemplate手写缓存。
+//    2.重写getBooks()函数，先调用所有的getBook(id)，再将它们全都放在一个List中返回。
 
     @RequestMapping("/getbook")
     public Book getBook(@RequestParam(value = "id") Long id) {
-
         return bookService.findBookById(id);
     }
 
     @RequestMapping("/updatebook")
-    public String updateBook(@RequestBody Book book) {
+    public Book updateBook(@RequestBody Book book) {
 //        System.out.println(book.toString());
         bookService.updateBook(book);
-        return JSON.toJSONString(null);
+        return book;
     }
 
     @RequestMapping("/deletebook")

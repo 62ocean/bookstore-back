@@ -13,8 +13,8 @@ public interface BookService {
 
     List<Book> getBooks();
 
-    void updateBook(Book book);
-    void deleteBook(Long id);
+    Book updateBook(Book book);
+    Book deleteBook(Long id);
 
     List<Map<String, Object>> bookStatistics(Timestamp date1, Timestamp date2);
 }
