@@ -1,20 +1,14 @@
 package com.example.bookstorebg.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.bookstorebg.entity.Book;
 import com.example.bookstorebg.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +58,12 @@ public class BookController {
         Timestamp date2 = new Timestamp(sdf.parse(datestr2).getTime());
 
         return bookService.bookStatistics(date1, date2);
+    }
+
+    @RequestMapping("/searchBooks")
+    public List<Book> searchBooks(@RequestBody Map<String, Object> o) {
+        String keyword = (String) o.get("keyword");
+        return bookService.searchBooks(keyword);
     }
 
 }

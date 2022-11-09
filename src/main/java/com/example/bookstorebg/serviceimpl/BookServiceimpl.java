@@ -2,14 +2,23 @@ package com.example.bookstorebg.serviceimpl;
 
 import com.example.bookstorebg.dao.BookDao;
 import com.example.bookstorebg.entity.Book;
+import com.example.bookstorebg.entity.Book;
 import com.example.bookstorebg.entity.Order;
 import com.example.bookstorebg.entity.OrderItem;
 import com.example.bookstorebg.service.BookService;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +30,8 @@ public class BookServiceimpl implements BookService {
 
     @Autowired
     private BookDao bookDao;
+    @Autowired
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Override
     @Cacheable(value = "book", key = "#id")
@@ -95,6 +106,40 @@ public class BookServiceimpl implements BookService {
         }
 
         return ret;
+    }
+
+    @Override
+    public List<Book> searchBooks(String keyword) {
+        List<Book> books = new ArrayList<>();
+        /*
+         * 设置 bool 查询
+         *  ① 设置查询 BoolQueryBuilder
+         *  ② 关键词 must(AND), mustNot(NOT), should(OR)
+         *  ③ 查询条件 MatchQueryBuilder 分词查询, TermQueryBuilder 不分词查询
+         */
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.should(new MatchQueryBuilder("name", keyword));
+        boolQueryBuilder.should(new MatchQueryBuilder("type", keyword));
+        boolQueryBuilder.should(new MatchQueryBuilder("author", keyword));
+        boolQueryBuilder.should(new MatchQueryBuilder("description", keyword));
+
+        /*
+         * 设置总查询
+         *  ① 设置查询 NativeSearchQueryBuilder
+         *  ② 设置查询条件 withQuery(BoolQueryBuilder boolQueryBuilder)
+         *  ③ 设置高亮 withHighlightFields(new HighlightBuilder.Field("name").preTags(preTag).postTags(postTag))
+         */
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).build();
+
+        // 查询
+        SearchHits<Book> searchHits = elasticsearchRestTemplate.search(nativeSearchQuery, Book.class);
+
+        // 遍历查询结果
+        for (SearchHit<Book> searchHit : searchHits) {
+            Book book = searchHit.getContent();
+            books.add(book);
+        }
+        return books;
     }
 }
 
