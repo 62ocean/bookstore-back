@@ -27,7 +27,7 @@ public class Book implements Serializable {
 
     @Field(type = FieldType.Text, analyzer = "ik_smart", searchAnalyzer = "ik_smart")
     private String name;
-    @Field(type = FieldType.Keyword, searchAnalyzer = "ik_smart")
+    @Field(type = FieldType.Text, analyzer = "ik_smart", searchAnalyzer = "ik_smart")
     private String type;
     @Field(type = FieldType.Keyword, searchAnalyzer = "ik_smart")
     private String author;
